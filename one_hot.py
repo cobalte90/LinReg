@@ -1,3 +1,4 @@
+# Кодирование категориальных переменных методом one-hot
 def one_hot(X):
     season_col = X['season']
     season_dict = {

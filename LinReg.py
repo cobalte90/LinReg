@@ -40,6 +40,3 @@ class LinReg:
 def MAE(y_true, y_pred):
     mae = np.mean(abs(y_true - y_pred))
     return mae
-
-    def predict(self, X_test):
-        return self.func(X_test, self.w, self.b)
