@@ -6,7 +6,6 @@ from matplotlib import pyplot as plt
 from one_hot import one_hot
 from LinReg import LinReg
 from sklearn.linear_model import LinearRegression
-from sklearn.linear_model import Lasso
 from sklearn.metrics import mean_squared_error as mse
 pd.set_option('display.max_columns', None)
 pd.options.display.width = 0
@@ -24,7 +23,7 @@ model.fit(learning_rate=0.01)
 y_pred = model.predict(X)
 
 # Обучение модели sklearn
-model_sklearn = Lasso(alpha=10)
+model_sklearn = LinearRegression()
 model_sklearn.fit(X, y)
 y_pred_sklearn = model_sklearn.predict(X)
 plt.scatter(y_pred_sklearn, y)
