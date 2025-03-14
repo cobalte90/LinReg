@@ -1,4 +1,32 @@
 # Кодирование категориальных переменных методом one-hot
+import pandas as pd
+import warnings
+warnings.simplefilter(action='ignore', category=pd.errors.PerformanceWarning)
+pd.set_option('display.max_columns', None)
+pd.options.display.width = 0
+
+
+def one_hot(X, columns):
+    for col_index in range(len(X.columns)):
+        if col_index in columns:
+            col_name = X.columns[col_index]
+            values = X[col_name].unique()
+            d = {}
+            for i in range(len(values)):
+                temp_key = col_name+'_'+str(i)
+                d[temp_key] = [1 if x == values[i] else 0 for x in X[col_name]]
+            for col in d:
+                X[col] = d[col]
+    columns_to_drop = []
+    for i in range(len(X.columns)):
+        if i in columns:
+            columns_to_drop.append(X.columns[i])
+    X = X.drop(columns_to_drop, axis=1)
+    return X
+
+
+
+'''
 def one_hot(X):
     season_col = X['season']
     season_dict = {
@@ -13,8 +41,8 @@ def one_hot(X):
 
     yr_col = X['yr']
     yr_dict = {
-        'yr_1' : [1 if x == 1 else 0 for x in season_col],
-        'yr_0' : [1 if x == 0 else 0 for x in season_col]
+        'yr_1' : [1 if x == 1 else 0 for x in yr_col],
+        'yr_0' : [1 if x == 0 else 0 for x in yr_col]
     }
     X = X.drop('yr', axis=1)
     for col in yr_dict:
@@ -70,4 +98,5 @@ def one_hot(X):
     X = X.drop('workingday', axis=1)
     for col in workingday_dict:
         X[col] = workingday_dict[col]
-    return X
+
+    return X '''
