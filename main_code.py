@@ -17,7 +17,7 @@ pd.options.display.width = 0
 df = pd.read_excel('bike.xlsx')
 
 # Разведочный анализ, графики
-# EDA(df)
+EDA(df)
 
 X = df.drop('cnt', axis=1)
 y = df['cnt']
