@@ -27,7 +27,7 @@ X = one_hot(X, [0, 1, 2, 3, 4, 5])
 
 # Обучение модели
 model = LinReg(X, y)
-model.fit(learn_method='gradient' ,learning_rate=0.05, epochs=100)
+model.fit(learn_method='gradient' ,learning_rate=0.05, epochs=1000)
 y_pred = model.predict(X)
 
 # Обучение модели sklearn
