@@ -1,45 +1,28 @@
 # Кодирование категориальных переменных методом one-hot
+import numpy as np
 import pandas as pd
-import warnings
-warnings.simplefilter(action='ignore', category=pd.errors.PerformanceWarning)
 pd.set_option('display.max_columns', None)
 pd.options.display.width = 0
 
-'''
-Функция для one-hot-encoding
-Параметры: X - датасет, columns - список индексов колонок для кодирования
-'''
-def one_hot(X, columns=[0]):
-    '''
-        Перебираем индексы колонок в датасете.
-            Если колонку нужно кодировать:
-                Создаем пустой словарь.
-                Берем список уникальных значений в колонке.
-                Для каждого уникального значения создаём список из нулей и единиц.
-                Передаем этот список в словарь по ключу: (имя исходной колонки)_(номер уникального значения)
-            Добавляем словарь новых колонок в датасет.
+# one-hot-encoding
+def encoding(X, columns): # X - DataFrame, columns - names of columns to encode
 
-        Помещаем исходные колонки в список columns_to_drop.
-        Удаляем из датасета исходные колонки.
-        Возвращаем датасет.
-
-    '''
-
-    for col_index in range(len(X.columns)):
-
-        if col_index in columns:
-            col_name = X.columns[col_index]
-            values = X[col_name].unique()
-            d = {} # Словарь для новых колонок
-            for i in range(len(values)):
-                temp_key = col_name+'_'+str(i)
-                d[temp_key] = [1 if x == values[i] else 0 for x in X[col_name]]
-            for col in d:
-                X[col] = d[col]
-
-    columns_to_drop = []
-    for i in range(len(X.columns)):
-        if i in columns:
-            columns_to_drop.append(X.columns[i])
-    X = X.drop(columns_to_drop, axis=1)
+    for col_name in columns: # iterate over columns names
+        current_column = X[col_name] # current column
+        values = np.unique(current_column) # unique values in current column
+        new_array = np.zeros((current_column.size, values.size)).astype(int) # 2-d array with size (current_column, unique_values)
+        row_indices = np.arange(current_column.size) # indices of rows in new array
+        col_indices = np.searchsorted(values, current_column) # indices of columns in new array
+        new_array[row_indices, col_indices] = 1 # insert 1 into the appropriate cells
+        new_df = pd.DataFrame(new_array, columns = values) # transform to DataFrame
+        X = pd.concat([X, new_df], axis=1) # concatenation
+        X = X.drop(col_name, axis=1) # delete original column
     return X
+
+# if the parameter "columns" if not specified or '', do encoding for all columns with type "object"
+def one_hot(X, columns=''):
+    if columns == '':
+        return encoding(X, [i for i in X.columns if X[i].dtype == 'object'])
+    else:
+        return encoding(X, columns)
+
