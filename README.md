@@ -1,11 +1,14 @@
-# LinReg и LogReg
-Линейная регрессия и логистическая регрессия без использования библиотек для машинного обучения, сравнение с sklearn моделями    
-Подробные комментарии в файлах с кодом
-# Структура:  
-LinReg.py - модель линейной регрессии и метод её обучения  
-LogReg.py - модель логистической регрессии и метод её обучения  
-main_code.py - запуск функций кодирования фичей и обучения моделей (моей и sklearn)  
-one_hot.py - кодирование категориальных фичей методом one-hot  
-EDA.py - разведочный анализ данных  
-metrics.py - метрики для оценки моделей  
-
+## Linear regression and logistic regression without using machine learning libraries, comparison with sklearn models. 
+## Detailed comments in code files.
+# Structure:  
+- linear_regression_show  
+- logistic_regression_show  
+- src
+  - models  
+---- LinReg.py  
+---- LogReg.py   
+  - utils  
+---- metrics.py  
+---- one-hot.py  
+---- EDA.py  
+  - data  
