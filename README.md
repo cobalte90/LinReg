@@ -3,8 +3,8 @@
 #### I also did EDA, one-hot encoding, calculated many metrics without special libraries.
 ## Detailed comments in code files.
 # Structure:  
-- linear_regression_show  
-- logistic_regression_show  
+- linear_regression_show.ipynb  
+- logistic_regression_show.ipynb  
 - src
   - models  
 ---- LinReg.py  
