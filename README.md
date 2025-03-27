@@ -8,7 +8,8 @@
 - src
   - models  
 ---- LinReg.py  
----- LogReg.py   
+---- LogReg.py  
+---- :deciduous_tree:
   - utils  
 ---- metrics.py  
 ---- one-hot.py  
