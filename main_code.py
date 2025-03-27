@@ -3,9 +3,10 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 from matplotlib import pyplot as plt
-from one_hot import one_hot
-from LinReg import *
-from EDA import EDA
+from src.utils.one_hot import one_hot
+from src.models.LinReg import *
+from src.utils.EDA import EDA
+from src.utils.metrics import *
 
 from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import Lasso
@@ -14,16 +15,15 @@ pd.set_option('display.max_columns', None)
 pd.options.display.width = 0
 
 
-df = pd.read_excel('bike.xlsx')
+df = pd.read_excel('src/data/bike.xlsx')
 
 # Разведочный анализ, графики
 # EDA(df)
 
 X = df.drop('cnt', axis=1)
 y = df['cnt']
-
 # Кодирование категориальных фичей
-X = one_hot(X, [0, 1, 2, 3, 4, 5])
+X = one_hot(X, ['season', 'yr', 'mnth', 'holiday', 'weekday'])
 
 # Обучение модели
 model = LinReg(X, y)
