@@ -11,4 +11,5 @@
 ---- metrics.py  
 ---- one-hot.py  
 ---- EDA.py  
-  - data  
+  - data
+---- *datasets for training and testing*
