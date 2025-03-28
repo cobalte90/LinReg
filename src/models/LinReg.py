@@ -1,9 +1,10 @@
 import pandas as pd
 import numpy as np
 import random
+from src.models.Linear_base import Linear
 
 
-class LinReg:
+class LinReg(Linear):
     def __init__(self):
         self.w = None
 
@@ -31,15 +32,9 @@ class LinReg:
 
             self.w = new_w
 
-    def predict(self, X_test):
-        # Добавляем колонку с единицами для смещения
-        X_test = np.c_[np.ones(X_test.shape[0]), X_test]
-        return self._linear_model(X_test, self.w)
+    
 
-    def _linear_model(self, X, w):
-        return X.dot(w)
-
-class Ridge:
+class Ridge(Linear):
     def __init__(self):
         self.w = None
 
@@ -56,13 +51,7 @@ class Ridge:
                 grad = (2 / X.shape[0]) * (X.T @ error) + (2 * regul_coef * self.w)
                 self.w -= learning_rate * grad
         
-    def predict(self, X_test):
-        # Добавляем колонку с единицами для смещения
-        X_test = np.c_[np.ones(X_test.shape[0]), X_test]
-        return self._linear_model(X_test, self.w)
     
-    def _linear_model(self, X, w):
-        return X @ w
     
 
 
