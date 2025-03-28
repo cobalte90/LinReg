@@ -6,13 +6,13 @@
 - linear_regression_show.ipynb  
 - logistic_regression_show.ipynb  
 - src
+  - metrics.py
   - models  
 ---- LinReg.py  
 ---- LogReg.py  
 ---- :deciduous_tree:
-  - utils  
----- metrics.py  
+  - preprocessing  
 ---- one-hot.py  
----- EDA.py  
+---- train_test_split.py  
   - data  
 ---- *datasets for training and testing*
