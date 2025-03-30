@@ -1,5 +1,13 @@
 import numpy as np
+import pandas as pd
 from matplotlib import pyplot as plt
+
+def linear_metrics(y_true, y_pred):
+    mse = MSE(y_true, y_pred)
+    mae = MAE(y_true, y_pred)
+    mape = MAPE(y_true, y_pred)
+    r2 = R_squared(y_true, y_pred)
+    return [mse, mae, mape, r2]
 
 def my_accuracy_score(y_true, y_pred):
     y_true, y_pred = np.array(y_true), np.array(y_pred)
@@ -11,40 +19,53 @@ def my_precision_score(y_true, y_pred):
     y_true, y_pred = np.array(y_true), np.array(y_pred)
     TP = np.sum((y_true == 1) & (y_pred == 1))
     FP = np.sum((y_true == 0) & (y_pred == 1))
-    score = TP / (TP + FP)
+    if TP + FP != 0:
+        score = TP / (TP + FP)
+    else:
+        score = 0
     return score
 
 def my_recall_score(y_true, y_pred):
     y_true, y_pred = np.array(y_true), np.array(y_pred)
     TP = np.sum((y_true == 1) & (y_pred == 1))
     FN = np.sum((y_true == 1) & (y_pred == 0))
-    score = TP / (TP + FN)
+    if TP + FN != 0:
+        score = TP / (TP + FN)
+    else:
+        score = 0
     return score
 
 def my_f1_score(y_true, y_pred, beta=1.0):
     precision = my_precision_score(y_true, y_pred)
     recall = my_recall_score(y_true, y_pred)
-    score = (1 + beta**2) * precision * recall / ( beta**2 * precision + recall )
+    if precision != 0:
+        score = (1 + beta**2) * precision * recall / ( beta**2 * precision + recall )
+    else:
+        score = 0
     return score
 
 def MSE(y_true, y_pred):
     y_true, y_pred = np.array(y_true), np.array(y_pred)
     score = np.sum((y_true - y_pred)**2) * 1/y_true.size
+    score = float(score)
     return score
 
 def RMSE(y_true, y_pred):
     mse = MSE(y_true, y_pred)
     score = np.sqrt(mse)
+    score = float(score)
     return score
 
 def MAE(y_true, y_pred):
     y_true, y_pred = np.array(y_true), np.array(y_pred)
     score = np.sum(np.abs(y_true - y_pred)) * 1/y_true.size
+    score = float(score)
     return score
 
 def MAPE(y_true, y_pred):
     y_true, y_pred = np.array(y_true), np.array(y_pred)
     score = np.sum( np.abs(y_true - y_pred) / y_true ) * 1 / y_true.size
+    score = float(score)
     return score
 
 def SMAPE(y_true, y_pred):
@@ -57,6 +78,7 @@ def R_squared(y_true, y_pred):
     SSR = np.sum( (y_true - y_pred)**2 )
     SST = np.sum( (y_true - np.mean(y_true))**2 )
     score = 1 - SSR / SST
+    score = float(score)
     return score
 
 def ROC_AUC(y_true, pred_proba):

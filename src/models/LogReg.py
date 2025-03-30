@@ -14,7 +14,8 @@ class LogReg:
     def linear_model(self, X):
         return np.dot(X, self.w) + self.b
 
-    def fit(self, X, y, epochs=100, learning_rate=0.01):
+    def fit(self, X, y, epochs=100, learning_rate=0.1):
+
 
         # Инициализация весов
         self.w = np.random.rand(X.shape[1])
@@ -35,5 +36,5 @@ class LogReg:
 
     def predict(self, X):
         y_pred = self.sigmoid(self.linear_model(X))
-        return np.array([ 1 if i >= 0.5 else 0 for i in y_pred])
+        return np.where(y_pred >= 0.5, 1, 0)
 

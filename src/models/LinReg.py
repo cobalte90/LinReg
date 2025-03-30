@@ -52,6 +52,21 @@ class Ridge(Linear):
                 self.w -= learning_rate * grad
         
     
+class Lasso(Linear):
+    def __init__(self):
+        self.w = None
     
+    def fit(self, X, y, learn_method='gradient', regul_coef=0.01, learning_rate=0.01, epochs=1000):
+        
+        self.w = np.random.rand(X.shape[1] + 1)
+
+        if learn_method == 'gradient':
+            X = np.c_[np.ones(X.shape[0]), X]
+            for eph in range(epochs):
+                y_true = np.array(y)
+                y_pred = self._linear_model(X, self.w)
+                error = y_pred - y_true
+                grad = 1 / X.shape[0] * (error @ X) + regul_coef * np.sign(self.w)
+                self.w -= learning_rate * grad
 
 
