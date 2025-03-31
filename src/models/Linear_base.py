@@ -1,8 +1,6 @@
 import numpy as np
-from abc import ABC, abstractmethod
 
 class Linear():
-
     
     def predict(self, X_test):
         # Добавляем колонку с единицами для смещения

@@ -39,7 +39,7 @@ def my_f1_score(y_true, y_pred, beta=1.0):
     precision = my_precision_score(y_true, y_pred)
     recall = my_recall_score(y_true, y_pred)
     if precision != 0:
-        score = (1 + beta**2) * precision * recall / ( beta**2 * precision + recall )
+        score = (1 + beta**2) * (precision * recall / ( beta**2 * precision + recall ))
     else:
         score = 0
     return score
@@ -64,7 +64,10 @@ def MAE(y_true, y_pred):
 
 def MAPE(y_true, y_pred):
     y_true, y_pred = np.array(y_true), np.array(y_pred)
-    score = np.sum( np.abs(y_true - y_pred) / y_true ) * 1 / y_true.size
+    if np.isin(0, y_true) == False:
+        score = np.sum( np.abs(y_true - y_pred) / y_true ) * 1 / y_true.size
+    else:
+        score = 0
     score = float(score)
     return score
 

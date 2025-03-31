@@ -1,40 +1,45 @@
 import pandas as pd
 import numpy as np
+from src.preprocessing.class_weights import compute_class_weight
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 
 # Логистическая регрессия
 class LogReg:
     def __init__(self):
         self.w = None
-        self.b = 0
+        self.is_bias = False
+        self.class_weights = None
 
     def sigmoid(self, z):
         return 1 / ( 1 + np.exp(-z))
 
     def linear_model(self, X):
-        return np.dot(X, self.w) + self.b
+        return np.dot(X, self.w)
 
-    def fit(self, X, y, epochs=100, learning_rate=0.1):
-
-
+    def fit(self, X, y, epochs=1000, learning_rate=0.5):
+        if self.is_bias == False:
+            X = np.c_[np.ones((X.shape[0], 1)), X]
+            self.bias = True
         # Инициализация весов
         self.w = np.random.rand(X.shape[1])
 
+        # Взвешивание классов
+        if self.class_weights == None:
+            self.class_weights = compute_class_weight(y)
+        weighted_classes = np.array([self.class_weights[i] for i in y])
+
         for eph in range(epochs):
-            # Предсказание целевой переменной
-            y_pred = self.sigmoid(self.linear_model(X))
+            y_pred = self.sigmoid(X @ self.w)
+            error = y_pred - y
+            grad = np.dot(X.T, error) / X.shape[0]
 
-            # Градиенты по весам и смещению
-            grad_w = - (1 / X.shape[0]) * np.dot(X.T, (y - y_pred))
-            grad_b = - (1 / X.shape[0]) * np.sum(y - y_pred)
+            self.w -= learning_rate * grad
 
-            # Обновление весов и смещения
-            self.w -= learning_rate * grad_w
-            self.b -= learning_rate * grad_b
-
-        return "Модель обучена!"
+        return self
 
     def predict(self, X):
-        y_pred = self.sigmoid(self.linear_model(X))
+        if self.is_bias == False:
+            X = np.c_[np.ones((X.shape[0], 1)), X]
+        y_pred = self.sigmoid(X @ self.w)
         return np.where(y_pred >= 0.5, 1, 0)
 
