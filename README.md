@@ -4,15 +4,19 @@
 ## Detailed comments are in code files.
 # Structure:  
 - linear_regression_show.ipynb  
-- logistic_regression_show.ipynb  
+- logistic_regression_show.ipynb
+- decision_tree_classifier_show.ipynb   
 - src
   - metrics.py
   - models  
 ---- LinReg.py  
 ---- LogReg.py  
----- :deciduous_tree:
+---- Linear_base.py  
+---- tree.py :deciduous_tree:  
   - preprocessing  
 ---- one-hot.py  
 ---- train_test_split.py  
+---- normalize.py  
+---- class_weights.py  
   - data  
 ---- *datasets for training and testing*
