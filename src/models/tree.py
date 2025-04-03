@@ -3,17 +3,18 @@ import pandas as pd
 from collections import Counter
 
 class Node:
+    # tree Node
     def __init__(self, is_leaf: bool = False, feature_index: int=None, threshold: float=None, 
                  left=None, right=None, value: int=None, n_samples: int=None, gain: float=None):
-        self.is_leaf = is_leaf
-        self.feature_index = feature_index
-        self.threshold = threshold
-        self.left = left
-        self.right = right
-        self.value = value
-        self.n_samples = n_samples
-        self.gain = gain
-
+        self.is_leaf = is_leaf # the last node in the branch
+        self.feature_index = feature_index # feature to split
+        self.threshold = threshold # threshold to split
+        self.left = left # left samples
+        self.right = right # right samples
+        self.value = value # class label
+        self.n_samples = n_samples # number of samples input
+        self.gain = gain # information gain in current node
+ 
 class DecisionTreeClassifier:
     def __init__(self, max_depth: int=4, min_samples_split: int=5, criterion: str='entropy'):
         self.max_depth = max_depth
@@ -88,24 +89,27 @@ class DecisionTreeClassifier:
 
         return best_feature, best_thresh, greatest_gain
     
-    def information_gain(self, y_left, y_right):
-        n_left = len(y_left)
-        n_right = len(y_right)
-        n_total = n_left + n_right
+    def information_gain(self, y_left, y_right): # left and right samples
+        n_left = len(y_left) # number of left samples
+        n_right = len(y_right) # number of right samples
+        n_total = n_left + n_right # total samples count
 
         if n_total == 0:
             return 0
 
-        p_left = n_left / n_total
+        # probabilities
+        p_left = n_left / n_total 
         p_right = n_right / n_total
 
+        # left and right entropy
         entropy_left = self.calculate_entropy(y_left)
         entropy_right = self.calculate_entropy(y_right)
 
+        # entropy before and after split
         parent_entropy = self.calculate_entropy(np.concatenate([y_left, y_right]))
         child_entropy = p_left * entropy_left + p_right * entropy_right
 
-        return parent_entropy - child_entropy
+        return parent_entropy - child_entropy # information gain
     
     def calculate_entropy(self, y):
         if len(y) == 0:
@@ -132,3 +136,7 @@ class DecisionTreeClassifier:
         if isinstance(X, pd.DataFrame):
             X = X.values
         return np.array([self.predict_sample(x, self.root) for x in X])
+    
+
+
+    
