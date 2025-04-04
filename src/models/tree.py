@@ -17,24 +17,26 @@ class Node:
  
 class DecisionTreeClassifier:
     def __init__(self, max_depth: int=4, min_samples_split: int=5, criterion: str='entropy'):
-        self.max_depth = max_depth
+        self.max_depth = max_depth 
         self.min_samples_split = min_samples_split
         self.criterion = criterion
-        self.root = None
-        self.feature_names = None
+        self.root = None 
+        self.feature_names = None 
 
     def fit(self, X, y):
         X, y = np.array(X), np.array(y)
         if isinstance(X, pd.DataFrame):
-            self.feature_names = X.columns.tolist()
-        self.root = self.tree_grow(X, y)
+            self.feature_names = X.columns.tolist() # some preprocessing
+        self.root = self.tree_grow(X, y) # grow tree
 
+    # main function
     def tree_grow(self, X, y, current_depth: int=0):
         n_samples, n_features = X.shape
         n_classes = len(np.unique(y))
 
-        node = Node(n_samples=n_samples)
+        node = Node(n_samples=n_samples) # tree node
 
+        # check whether the algorithm's stopping conditions have been met
         if (self.max_depth is not None and current_depth >= self.max_depth) or \
            (n_classes == 1) or \
            (n_samples < self.min_samples_split):
@@ -55,9 +57,11 @@ class DecisionTreeClassifier:
         node.threshold = best_threshold
         node.gain = gain
 
+        # indices of left and right subtrees
         left_idx = X[:, best_feature_index] <= best_threshold
         right_idx = ~left_idx
 
+        # grow subtrees
         node.left = self.tree_grow(X[left_idx], y[left_idx], current_depth+1)
         node.right = self.tree_grow(X[right_idx], y[right_idx], current_depth+1)
         
